@@ -19,7 +19,8 @@ export const comparePassword = async (password: string, savedPassword: string): 
 
   try {
     passwordMatch = await argon2.verify(savedPassword, password, {
-      secret: Buffer.from(config.ARGON2ID_SALT, "utf-8"),
+      salt: Buffer.from(config.ARGON2ID_SALT, "utf-8"),
+      type: argon2.argon2id,
     });
   } catch (error) {
     console.log("Error while verifying password", error);

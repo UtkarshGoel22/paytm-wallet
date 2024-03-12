@@ -2,6 +2,7 @@ export const ErrorMessages = {
   INCORRECT_USERNAME_OR_PASSWORD: "Incorrect username or password",
   INVALID_REQUEST_DATA: "Invalid request data",
   SOMETHING_WENT_WRONG: "Something went wrong",
+  UNAUTHORIZED_ACCESS: "You do not have access to perform the action",
 };
 
 export const FieldConstraints = {
@@ -13,6 +14,7 @@ export const FieldConstraints = {
 export const ResponseMessages = {
   USER_CREATED_SUCCESSFULLY: "User created successfully",
   USER_LOGGED_IN_SUCCESSFULLY: "User logged in successfully",
+  USER_UPDATED_SUCCESSFULLY: "User updated successfully",
 };
 
 export const ValidationMessages = {

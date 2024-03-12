@@ -4,9 +4,14 @@ import * as jwt from "jsonwebtoken";
 
 import { ErrorMessages, ResponseMessages } from "../constants";
 import { User } from "../db";
-import { userSigninValidation, userSignupValidation } from "../middlewares";
+import {
+  tokenValidation,
+  userSigninValidation,
+  userSignupValidation,
+  userUpdateValidation,
+} from "../middlewares";
 import config from "../settings";
-import { makeResponse } from "../utils";
+import { comparePassword, makeResponse } from "../utils";
 
 const router = express.Router();
 
@@ -22,6 +27,12 @@ router.post("/signin", userSigninValidation, async (req: Request, res: Response)
       .json(makeResponse(false, ErrorMessages.INCORRECT_USERNAME_OR_PASSWORD, errData));
   }
 
+  try {
+    await comparePassword(req.body.password, user.password);
+  } catch (error) {
+    return res.status(error.statusCode).json(makeResponse(false, error.message, error.data));
+  }
+
   const token = jwt.sign({ userId: user._id }, config.JWT_SECRET);
   res
     .status(StatusCodes.CREATED)
@@ -34,6 +45,15 @@ router.post("/signup", userSignupValidation, async (req: Request, res: Response)
   res
     .status(StatusCodes.CREATED)
     .json(makeResponse(true, ResponseMessages.USER_CREATED_SUCCESSFULLY, { token }));
+});
+
+router.patch("/", tokenValidation, userUpdateValidation, async (req, res) => {
+  const user = await User.findOneAndUpdate({ _id: req.userId }, req.body, { new: true }).select(
+    "-password -__v"
+  );
+  return res
+    .status(StatusCodes.OK)
+    .json(makeResponse(true, ResponseMessages.USER_UPDATED_SUCCESSFULLY, { user }));
 });
 
 export default router;

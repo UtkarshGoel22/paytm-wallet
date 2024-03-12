@@ -31,3 +31,16 @@ export const SignupSchema = z.object({
     .string({ required_error: ValidationMessages.PASSWORD_REQUIRED })
     .min(FieldConstraints.PASSWORD.MIN_LENGTH, ValidationMessages.PASSWORD_MIN_LENGTH),
 });
+
+export const UpdateUserSchema = z.object({
+  firstName: z
+    .string()
+    .min(FieldConstraints.NAME.MIN_LENGTH, ValidationMessages.FIRST_NAME_LENGTH)
+    .max(FieldConstraints.NAME.MAX_LENGTH, ValidationMessages.FIRST_NAME_LENGTH)
+    .optional(),
+  lastName: z
+    .string()
+    .min(FieldConstraints.NAME.MIN_LENGTH, ValidationMessages.LAST_NAME_LENGTH)
+    .max(FieldConstraints.NAME.MAX_LENGTH, ValidationMessages.LAST_NAME_LENGTH)
+    .optional(),
+});
