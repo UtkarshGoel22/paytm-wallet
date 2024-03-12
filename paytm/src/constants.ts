@@ -16,6 +16,7 @@ export const ResponseMessages = {
   USER_LOGGED_IN_SUCCESSFULLY: "User logged in successfully",
   USER_UPDATED_SUCCESSFULLY: "User updated successfully",
   USERS_FETCHED_SUCCESSFULLY: "Users fetched successfully",
+  BALANCE_FETCHED_SUCCESSFULLY: "Balance fetched successfully",
 };
 
 export const ValidationMessages = {
