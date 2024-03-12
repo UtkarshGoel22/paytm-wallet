@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import * as jwt from "jsonwebtoken";
 
 import { ErrorMessages, ResponseMessages } from "../constants";
-import { User } from "../db";
+import { Account, User } from "../db";
 import {
   tokenValidation,
   userSigninValidation,
@@ -34,6 +34,7 @@ router.post("/signin", userSigninValidation, async (req: Request, res: Response)
   }
 
   const token = jwt.sign({ userId: user._id }, config.JWT_SECRET);
+
   res
     .status(StatusCodes.CREATED)
     .json(makeResponse(true, ResponseMessages.USER_LOGGED_IN_SUCCESSFULLY, { token }));
@@ -42,6 +43,7 @@ router.post("/signin", userSigninValidation, async (req: Request, res: Response)
 router.post("/signup", userSignupValidation, async (req: Request, res: Response) => {
   const user = await User.create(req.body);
   const token = jwt.sign({ userId: user._id }, config.JWT_SECRET);
+  await Account.create({ userId: user._id, balance: config.COMPLIMENTARY_BALANCE });
   res
     .status(StatusCodes.CREATED)
     .json(makeResponse(true, ResponseMessages.USER_CREATED_SUCCESSFULLY, { token }));
