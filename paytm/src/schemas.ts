@@ -32,6 +32,13 @@ export const SignupSchema = z.object({
     .min(FieldConstraints.PASSWORD.MIN_LENGTH, ValidationMessages.PASSWORD_MIN_LENGTH),
 });
 
+export const TransferAmountSchema = z.object({
+  to: z.string({ required_error: ValidationMessages.TO_REQUIRED }),
+  amount: z
+    .number({ required_error: ValidationMessages.AMOUNT_REQUIRED })
+    .min(FieldConstraints.AMOUNT.MIN_VALUE, ValidationMessages.AMOUNT_CANNOT_BE_NEGATIVE),
+});
+
 export const UpdateUserSchema = z.object({
   firstName: z
     .string()

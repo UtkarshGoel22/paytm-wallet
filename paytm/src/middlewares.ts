@@ -7,6 +7,7 @@ import { User } from "./db";
 import {
   validateSigninRequestData,
   validateSignupRequestData,
+  validateTransferAmountRequestData,
   validateUpdateUserRequestData,
 } from "./helpers";
 import config from "./settings";
@@ -31,6 +32,16 @@ export async function tokenValidation(req: Request, res: Response, next: NextFun
       .status(StatusCodes.FORBIDDEN)
       .json(makeResponse(false, ErrorMessages.UNAUTHORIZED_ACCESS, errData));
   }
+}
+
+export async function transferAmountValidation(req: Request, res: Response, next: NextFunction) {
+  try {
+    req.body = validateTransferAmountRequestData(req.body);
+  } catch (err) {
+    return res.status(StatusCodes.BAD_REQUEST).json(makeResponse(false, err.message, err.data));
+  }
+
+  next();
 }
 
 export async function userSigninValidation(req: Request, res: Response, next: NextFunction) {
