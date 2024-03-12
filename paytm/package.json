@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "index.js",
   "scripts": {
-    "watch": "ts-node-dev index.ts"
+    "watch": "ts-node-dev src/index.ts"
   },
   "author": "Utkarsh Goel",
   "license": "ISC",
