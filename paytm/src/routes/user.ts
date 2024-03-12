@@ -47,13 +47,25 @@ router.post("/signup", userSignupValidation, async (req: Request, res: Response)
     .json(makeResponse(true, ResponseMessages.USER_CREATED_SUCCESSFULLY, { token }));
 });
 
-router.patch("/", tokenValidation, userUpdateValidation, async (req, res) => {
+router.patch("/", tokenValidation, userUpdateValidation, async (req: Request, res: Response) => {
   const user = await User.findOneAndUpdate({ _id: req.userId }, req.body, { new: true }).select(
     "-password -__v"
   );
   return res
     .status(StatusCodes.OK)
     .json(makeResponse(true, ResponseMessages.USER_UPDATED_SUCCESSFULLY, { user }));
+});
+
+router.get("/bulk", async (req: Request, res: Response) => {
+  const filter = req.query.filter || "";
+
+  const users = await User.find({
+    $or: [{ firstName: { $regex: filter } }, { lastName: { $regex: filter } }],
+  }).select("-password -__v");
+
+  return res
+    .status(StatusCodes.OK)
+    .json(makeResponse(true, ResponseMessages.USERS_FETCHED_SUCCESSFULLY, { users }));
 });
 
 export default router;
