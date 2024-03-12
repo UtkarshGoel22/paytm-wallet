@@ -1,6 +1,17 @@
 import { z } from "zod";
 
-import { FieldConstraints, ValidationMessages } from "./constants";
+import { ErrorMessages, FieldConstraints, ValidationMessages } from "./constants";
+
+export const SigninSchema = z.object({
+  username: z
+    .string({ required_error: ValidationMessages.USERNAME_REQUIRED })
+    .email(ErrorMessages.INCORRECT_USERNAME_OR_PASSWORD)
+    .min(FieldConstraints.USERNAME.MIN_LENGTH, ErrorMessages.INCORRECT_USERNAME_OR_PASSWORD)
+    .max(FieldConstraints.USERNAME.MAX_LENGTH, ErrorMessages.INCORRECT_USERNAME_OR_PASSWORD),
+  password: z
+    .string({ required_error: ValidationMessages.PASSWORD_REQUIRED })
+    .min(FieldConstraints.PASSWORD.MIN_LENGTH, ErrorMessages.INCORRECT_USERNAME_OR_PASSWORD),
+});
 
 export const SignupSchema = z.object({
   firstName: z

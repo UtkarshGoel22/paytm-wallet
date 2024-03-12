@@ -3,8 +3,18 @@ import { StatusCodes } from "http-status-codes";
 
 import { ErrorMessages, ValidationMessages } from "./constants";
 import { User } from "./db";
-import { validateSignupRequestData } from "./helpers";
+import { validateSigninRequestData, validateSignupRequestData } from "./helpers";
 import { makeResponse } from "./utils";
+
+export async function userSigninValidation(req, res, next) {
+  try {
+    req.body = validateSigninRequestData(req.body);
+  } catch (err) {
+    return res.status(StatusCodes.BAD_REQUEST).json(makeResponse(false, err.message, err.data));
+  }
+
+  next();
+}
 
 export async function userSignupValidation(req: Request, res: Response, next: NextFunction) {
   try {

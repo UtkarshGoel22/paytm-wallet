@@ -1,6 +1,14 @@
 import { ErrorMessages } from "./constants";
-import { SignupSchema } from "./schemas";
+import { SigninSchema, SignupSchema } from "./schemas";
 import { validateData } from "./utils";
+
+export const validateSigninRequestData = (data: object) => {
+  try {
+    return validateData(SigninSchema, data);
+  } catch (error) {
+    throw { message: ErrorMessages.INVALID_REQUEST_DATA, data: error.data };
+  }
+};
 
 export const validateSignupRequestData = (data: object) => {
   try {
